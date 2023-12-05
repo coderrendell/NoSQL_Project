@@ -1,52 +1,86 @@
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("query1Btn").addEventListener("click", function () {
-        const getDataUrl = "http://127.0.0.1:5000/task1";
+    function runQuery(endpoint, resultDivId) {
+        const getDataUrl = `http://127.0.0.1:5000/${endpoint}`;
 
         axios.get(getDataUrl)
             .then(function (response) {
                 console.log("Data fetched successfully:", response.data);
-                document.getElementById("output").innerHTML = JSON.stringify(response.data);
 
-                // Assuming the data is within the 'result' key
-                const data = response.data.result;
+                const result = response.data.result;
 
-                // Check if data is an array before using map
-                if (Array.isArray(data)) {
-                    updateChart(data);
+                // Display the result in the respective query result div
+                if (Array.isArray(result)) {
+                    document.getElementById(resultDivId).innerHTML = JSON.stringify(result, null, 2);
                 } else {
-                    console.error("Data received is not an array:", data);
-                    document.getElementById("output").innerHTML = "Error: Data is not in the expected format";
+                    console.error("Data received is not an array:", result);
+                    document.getElementById(resultDivId).innerHTML = "Error: Data is not in the expected format";
                 }
             })
             .catch(function (error) {
                 console.error("Error fetching data:", error);
-                document.getElementById("output").innerHTML = "Error fetching data";
+                document.getElementById(resultDivId).innerHTML = "Error fetching data";
             });
+    }
+
+    document.getElementById("query1Btn").addEventListener("click", function () {
+        runQuery('task1', 'query1Result');
     });
 
-    // Function to update the chart
-    function updateChart(data) {
+    document.getElementById("query2Btn").addEventListener("click", function () {
+        runQuery('task2', 'query2Result');
+    });
+
+    // document.getElementById("query3Btn").addEventListener("click", function () {
+    //     runQuery('task3', 'query3Result');
+    // });
+    
+    // Similar listeners for query2Btn and query3Btn with appropriate endpoints (task2 and task3)
+    
+
+    // createPieChart(result);
+
+    // Function to create a pie chart
+    function createPieChart(result) {
         const ctx = document.getElementById('myChart').getContext('2d');
 
-        const myChart = new Chart(ctx, {
-            type: 'bar',
+        // Extracting customer segments and counting their occurrences
+        const segments = result.map(item => item.customer_segment[0]); // Assuming customer_segment always has one value
+        const segmentCounts = {};
+        segments.forEach(segment => {
+            if (segmentCounts[segment]) {
+                segmentCounts[segment]++;
+            } else {
+                segmentCounts[segment] = 1;
+            }
+        });
+
+        const segmentLabels = Object.keys(segmentCounts);
+        const segmentValues = Object.values(segmentCounts);
+
+        const myPieChart = new Chart(ctx, {
+            type: 'pie',
             data: {
-                labels: data.map((item, index) => `Label ${index + 1}`),
+                labels: segmentLabels,
                 datasets: [{
-                    label: 'Data Values',
-                    data: data,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    label: 'Customer Segmentation',
+                    data: segmentValues,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        // Add more colors if needed
+                    ],
                     borderWidth: 1
                 }]
             },
             options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+                // Add options for the pie chart as needed
             }
         });
     }
+
+    document.getElementById("query3Btn").addEventListener("click", function () {
+        runQuery('task3', 'query3Result');
+    });
 });
