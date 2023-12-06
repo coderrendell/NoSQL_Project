@@ -30,9 +30,36 @@ document.addEventListener("DOMContentLoaded", function () {
         runQuery('task2', 'query2Result');
     });
 
-    // document.getElementById("query3Btn").addEventListener("click", function () {
-    //     runQuery('task3', 'query3Result');
-    // });
+    document.getElementById("query3Btn").addEventListener("click", function () {
+         runQuery('task3', 'query3Result');
+    });
+
+    // Function to run the query and generate pie chart
+function runQuery(endpoint, resultDivId) {
+    const getDataUrl = `http://127.0.0.1:5000/${endpoint}`;
+
+    axios.get(getDataUrl)
+        .then(function (response) {
+            console.log("Data fetched successfully:", response.data);
+
+            const result = response.data.result;
+
+            if (Array.isArray(result)) {
+                document.getElementById(resultDivId).innerHTML = JSON.stringify(result, null, 2);
+
+                if (resultDivId === 'query3Result') {
+                    createPieChart(result); // Call function to create pie chart
+                }
+            } else {
+                console.error("Data received is not an array:", result);
+                document.getElementById(resultDivId).innerHTML = "Error: Data is not in the expected format";
+            }
+        })
+        .catch(function (error) {
+            console.error("Error fetching data:", error);
+            document.getElementById(resultDivId).innerHTML = "Error fetching data";
+        });
+}
     
     // Similar listeners for query2Btn and query3Btn with appropriate endpoints (task2 and task3)
     
@@ -43,27 +70,23 @@ document.addEventListener("DOMContentLoaded", function () {
     function createPieChart(result) {
         const ctx = document.getElementById('myChart').getContext('2d');
 
-        // Extracting customer segments and counting their occurrences
-        const segments = result.map(item => item.customer_segment[0]); // Assuming customer_segment always has one value
-        const segmentCounts = {};
-        segments.forEach(segment => {
-            if (segmentCounts[segment]) {
-                segmentCounts[segment]++;
-            } else {
-                segmentCounts[segment] = 1;
-            }
-        });
+        // Process data for pie chart (sample implementation)
+        const labels = [];
+        const dataValues = [];
 
-        const segmentLabels = Object.keys(segmentCounts);
-        const segmentValues = Object.values(segmentCounts);
+        result.forEach(item => {
+            labels.push(item._id.username);
+            // Example: Assuming 'total_helpful_votes' field represents data for the pie chart
+            dataValues.push(item.total_helpful_votes);
+        });
 
         const myPieChart = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: segmentLabels,
+                labels: labels,
                 datasets: [{
                     label: 'Customer Segmentation',
-                    data: segmentValues,
+                    data: dataValues,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.7)',
                         'rgba(54, 162, 235, 0.7)',
