@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from pymongo import MongoClient
 from bson import ObjectId
 from flask_cors import CORS
+from flask_cors import cross_origin
 from datetime import datetime, timedelta
 # nidhi
 
@@ -100,47 +101,30 @@ def task2():
 
 # Task 3: Customer Behavior Segmentation - Segment customers based on ratings, recommendations, and number of helpful votes
 @app.route('/task3', methods=['GET'])
+@cross_origin()
 def task3():
     # MongoDB aggregation pipeline for customer behavior segmentation
     pipeline = [
         {
             '$match': {
                 'reviews.rating': {'$exists': True},  # Filter documents where reviews.rating exists
-                'reviews.doRecommend': {'$exists': True},  # Filter documents where reviews.doRecommend exists
-                'reviews.numHelpful': {'$exists': True}  # Filter documents where reviews.numHelpful exists
+                # Add more filters as needed
             }
         },
         {
             '$project': {
-                'username': '$reviews.username',
-                'rating': '$reviews.rating',
-                'recommendation': '$reviews.doRecommend',
-                'numHelpfulVotes': '$reviews.numHelpful'
+                'rating': '$reviews.rating'
                 # Add more fields as needed for customer segmentation
             }
         },
         {
             '$group': {
-                '_id': {
-                    'username': '$username'
-                    # Group by username to segment customers
-                },
-                'average_rating': {'$avg': '$rating'},
-                'recommendation_count': {'$sum': {'$cond': [{'$eq': ['$recommendation', True]}, 1, 0]}},
-                'total_helpful_votes': {'$sum': '$numHelpfulVotes'},
-                'customer_segment': {
-                    '$addToSet': {
-                        '$switch': {
-                            'branches': [
-                                {'case': {'$gte': ['$rating', 4]}, 'then': 'Highly Satisfied'},
-                                {'case': {'$and': [{'$gte': ['$rating', 3]}, {'$lt': ['$rating', 4]}]}, 'then': 'Satisfied'},
-                                {'case': {'$lt': ['$rating', 3]}, 'then': 'Neutral or Dissatisfied'}
-                            ],
-                            'default': 'Unknown'
-                        }
-                    }
-                }
-                # Add more aggregations or segmentation criteria as needed
+                '_id': None,
+                'HighlySatisfied': {'$sum': {'$cond': [{'$gte': ['$rating', 4]}, 1, 0]}},
+                'Satisfied': {'$sum': {'$cond': [{'$eq': [{'$and': [{'$gte': ['$rating', 3]}, {'$lt': ['$rating', 4]}]}, True]}, 1, 0]}},
+                'Neutral': {'$sum': {'$cond': [{'$eq': [{'$and': [{'$gte': ['$rating', 2]}, {'$lt': ['$rating', 3]}]}, True]}, 1, 0]}},
+                'Unsatisfied': {'$sum': {'$cond': [{'$lt': ['$rating', 2]}, 1, 0]}}
+                # Define conditions and use $cond operator to categorize ratings
             }
         }
     ]
@@ -150,7 +134,6 @@ def task3():
 
     # Return the result as a JSON response
     return jsonify(result=result)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
