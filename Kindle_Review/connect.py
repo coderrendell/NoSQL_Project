@@ -82,9 +82,8 @@ def task2():
         {
             '$group': {
                 '_id': '$user.City',  # Grouping by city
-                'average_helpful_votes': {'$avg': '$reviews.numHelpful'},
-                'average_comments': {'$avg': '$reviews.numComments'},
-                'average_rating': {'$avg': '$reviews.rating'}
+                'average_helpful_votes': {'$sum': '$reviews.numHelpful'},
+                'average_rating': {'$sum': '$reviews.rating'}
                 # Add more aggregations or metrics as needed
             }
         },
