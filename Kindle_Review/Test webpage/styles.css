@@ -1,0 +1,17 @@
+/* Add your custom styles here */
+body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    max-width: 800px;
+}
+
+.btn {
+    width: 100%;
+}
+
+canvas {
+    max-width: 100%;
+    height: auto;
+}

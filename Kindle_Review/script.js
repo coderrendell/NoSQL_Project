@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to create a pie chart
     function createPieChart(result) {
         const ctx = document.getElementById('myChart').getContext('2d');
-        
+
         const labels = ['Highly Satisfied', 'Satisfied', 'Neutral', 'Unsatisfied'];
         const dataValues = [];
 
@@ -57,6 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('query3Result').innerHTML = 'Error: Invalid or empty data';
             return;
         }
+        j
+
 
         const myPieChart = new Chart(ctx, {
             type: 'pie',
@@ -88,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function createBarGraph(result) {
         const ctxBar = document.getElementById('myBarChart').getContext('2d');
-    
+
         // Process data for vertical bar chart (sample implementation)
         const labels = [];
         const dataValues1 = [];
@@ -106,14 +108,14 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('query2Result').innerHTML = 'Error: Invalid or empty data';
             return;
         }
-    
+
         // result.forEach(item => {
         //     labels.push(item._id.user.City);
         //     // Example: Assuming 'some_numeric_property' field represents data for the vertical bar chart
         //     dataValues1.push(item.some_numeric_property);
         //     dataValues2.push(item.some_numeric_property);
         // });
-    
+
         const myBarChart = new Chart(ctxBar, {
             type: 'bar', // Change to 'bar' for vertical bar chart
             data: {

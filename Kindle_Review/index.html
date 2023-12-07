@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NoSQL Query App</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -14,24 +18,28 @@
     <div class="container">
         <h1>NoSQL Query App</h1>
         <div class="button-container">
-            <button id="query1Btn">Run Query 1</button>
-            <button id="query2Btn">Run Query 2</button>
-            <button id="query3Btn">Run Query 3</button>
+            <button id="query1Btn" data-toggle="collapse" data-target="#query1Result">Run Query 1</button>
+            <button id="query2Btn" data-toggle="collapse" data-target="#query2Result">Run Query 2</button>
+            <button id="query3Btn" data-toggle="collapse" data-target="#query3Result">Run Query 3</button>
         </div>
         <div id="queryResults">
-            <div id="query1Result"></div>
-            <div id="query2Result"></div>
-            <div id="query3Result"></div>
+            <div id="query1Result" class="collapse"></div>
+            <div id="query2Result" class="collapse"></div>
+            <div id="query3Result" class="collapse"></div>
         </div>
         <!-- <div id="output"></div> -->
         <!-- Add a canvas for the chart -->
         <canvas id="myChart"></canvas>
         <canvas id="myBarChart"></canvas>
-
-
     </div>
+    <!-- Add Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
     <script src="script.js"></script>
 </body>
 
