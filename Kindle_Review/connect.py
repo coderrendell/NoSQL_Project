@@ -4,7 +4,7 @@ from bson import ObjectId
 from flask_cors import CORS
 from flask_cors import cross_origin
 from datetime import datetime, timedelta
-# nidhi
+
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=False)
@@ -15,55 +15,25 @@ db = client['KindleReview']
 collection = db['Amazon']
 
 # Task 1: How do the reviews in the first 90 days after a product launch compare to the price of the product?
+# Task 1: How do the reviews in the first 90 days after a product launch compare to the price of the product?
 @app.route('/task1', methods=['GET'])
 def task1():
-    # Define the product launch date (replace with your actual product launch date)
-    product_launch_date = datetime(2023, 1, 1)
-
-    # Calculate the date 90 days after the product launch
-    ninety_days_after_launch = product_launch_date + timedelta(days=90)
-
-    # MongoDB aggregation pipeline to analyze review data and product prices
     pipeline = [
         {
-        '$match': {
-            'reviews.date': {
-                '$gte': product_launch_date,
-                '$lt': ninety_days_after_launch
+            '$match': {
+                'launch.price': {'$exists': True},
+                '90days.price': {'$exists': True}
+            }
+        },
+        {
+            '$group': {
+                '_id': '$name',  # Grouping by product name
+                'launch_price': {'$first': '$launch.price'},  # Get the launch price
+                'price_after_90_days': {'$first': '$90days.price'}  # Get the price after 90 days
             }
         }
-    },
-    {
-        '$project': {
-            'id': 1,
-            'reviews.date': 1,
-            'reviews.rating': 1,
-            'price': 1  # Replace 'price' with your actual field name for product price
-            # Add other fields as needed for analysis
-        }
-    },
-    {
-        '$group': {
-            '_id': '$id',
-            'avgPrice': {'$avg': '$price'},
-             'avgRating': {'$avg': '$reviews.rating'},
-            'count': {'$sum': 1}
-        }
-    },
-    {
-        '$project': {
-            '_id': 1,
-            'avgPrice': 1,
-            'avgRating': 1,
-            'count': 1
-        }
-    },
-    {
-        '$sort': {'avgPrice': 1}
-    }
     ]
 
-    # Execute the aggregation pipeline
     result = list(collection.aggregate(pipeline))
 
     return jsonify(result=result)

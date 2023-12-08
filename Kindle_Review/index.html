@@ -8,39 +8,54 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
+
 <body>
-    <div class="container">
+
+    <div class="container mt-5">
         <h1>NoSQL Query App</h1>
-        <div class="button-container">
-            <button id="query1Btn" data-toggle="collapse" data-target="#query1Result">Run Query 1</button>
-            <button id="query2Btn" data-toggle="collapse" data-target="#query2Result">Run Query 2</button>
-            <button id="query3Btn" data-toggle="collapse" data-target="#query3Result">Run Query 3</button>
+
+        <button class="btn btn-primary mt-3" data-toggle="collapse" data-target="#query1" aria-expanded="false"
+            aria-controls="query1">
+            Run Query 1
+        </button>
+        <div class="collapse mt-3" id="query1">
+            <div class="card card-body">
+                <canvas id="chartQuery1" width="400" height="200"></canvas>
+            </div>
         </div>
-        <div id="queryResults">
-            <div id="query1Result" class="collapse"></div>
-            <div id="query2Result" class="collapse"></div>
-            <div id="query3Result" class="collapse"></div>
+
+        <button class="btn btn-primary mt-3" data-toggle="collapse" data-target="#query2" aria-expanded="false"
+            aria-controls="query2">
+            Run Query 2
+        </button>
+        <div class="collapse mt-3" id="query2">
+            <div class="card card-body">
+                <canvas id="chartQuery2" width="400" height="200"></canvas>
+            </div>
         </div>
-        <!-- <div id="output"></div> -->
-        <!-- Add a canvas for the chart -->
-        <canvas id="myChart"></canvas>
-        <canvas id="myBarChart"></canvas>
+
+        <button class="btn btn-primary mt-3" data-toggle="collapse" data-target="#query3" aria-expanded="false"
+            aria-controls="query3">
+            Run Query 3
+        </button>
+        <div class="collapse mt-3" id="query3">
+            <div class="card card-body">
+                <canvas id="chartQuery3" width="400" height="200"></canvas>
+            </div>
+        </div>
     </div>
-    <!-- Add Bootstrap JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="script.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="scripts.js"></script>
+
 </body>
 
 </html>
